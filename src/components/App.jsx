@@ -1,17 +1,38 @@
 import React, { useState } from "react";
 
 function App() {
-  let [name, updateName] = useState("");
-  let [heading, setHeading] = useState("");
+  const [text, updateText] = useState("");
   const [buttonColor, setColor] = useState(true);
-  function setName(event) {
-    updateName(event.target.value);
-  }
+  const [contacts, setContact] = useState({
+    fName: "",
+    lName: "",
+    email: ""
+  });
 
-  function headingText(event) {
-    setHeading(name);
+  function updateContact(event) {
+    const { name, value } = event.target;
 
-    event.preventDefault();
+    setContact((prevValue) => {
+      if (name === "fName") {
+        return {
+          fName: value,
+          lName: prevValue.lName,
+          email: prevValue.email
+        };
+      } else if (name === "lName") {
+        return {
+          fName: prevValue.fName,
+          lName: value,
+          email: prevValue.email
+        };
+      } else if (name === "email") {
+        return {
+          fName: prevValue.fName,
+          lName: prevValue.lName,
+          email: value
+        };
+      }
+    });
   }
 
   function onMouseOver() {
@@ -22,16 +43,41 @@ function App() {
     setColor(true);
   }
 
+  function handleClick(event) {
+    updateText("Thank you!!");
+
+    event.preventDefault();
+  }
+
   return (
     <div className="container">
-      <h1>Hello! {heading}</h1>
-      <form onSubmit={headingText}>
+      <h1>
+        Hello! {contacts.fName} {contacts.lName}
+      </h1>
+      <p>{contacts.email}</p>
+      <form onSubmit={handleClick}>
         <input
           type="text"
-          placeholder="What's your name?"
-          onChange={setName}
-          value={name}
+          name="fName"
+          placeholder="First name"
+          onChange={updateContact}
+          value={contacts.fName}
         />
+        <input
+          type="text"
+          name="lName"
+          placeholder="Last name"
+          onChange={updateContact}
+          value={contacts.lName}
+        />
+        <input
+          type="text"
+          name="email"
+          placeholder="Email Id"
+          onChange={updateContact}
+          value={contacts.email}
+        />
+
         <button
           style={{ backgroundColor: buttonColor ? "white" : "black" }}
           onMouseOver={onMouseOver}
@@ -41,6 +87,7 @@ function App() {
           Submit
         </button>
       </form>
+      <h1>{text}</h1>
     </div>
   );
 }
