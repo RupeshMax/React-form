@@ -8,8 +8,10 @@ function App() {
     updateName(event.target.value);
   }
 
-  function headingText() {
+  function headingText(event) {
     setHeading(name);
+
+    event.preventDefault();
   }
 
   function onMouseOver() {
@@ -23,20 +25,22 @@ function App() {
   return (
     <div className="container">
       <h1>Hello! {heading}</h1>
-      <input
-        type="text"
-        placeholder="What's your name?"
-        onChange={setName}
-        value={name}
-      />
-      <button
-        style={{ backgroundColor: buttonColor ? "white" : "black" }}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-        onClick={headingText}
-      >
-        Submit
-      </button>
+      <form onSubmit={headingText}>
+        <input
+          type="text"
+          placeholder="What's your name?"
+          onChange={setName}
+          value={name}
+        />
+        <button
+          style={{ backgroundColor: buttonColor ? "white" : "black" }}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 }
